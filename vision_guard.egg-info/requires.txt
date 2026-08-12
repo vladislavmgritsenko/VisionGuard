@@ -1,0 +1,14 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+pydantic-settings==2.10.1
+python-multipart==0.0.20
+pillow==11.3.0
+prometheus-client==0.22.1
+
+[dev]
+httpx==0.28.1
+pytest==8.4.1
+ruff==0.12.8
+
+[ml]
+ultralytics==8.3.176
