@@ -9,6 +9,8 @@ Copy-Item .env.example .env
 docker compose up --build
 ```
 
+
+
 Интерфейс: <http://localhost:8011>. Документация API в development-режиме: <http://localhost:8011/docs>.
 
 ## Production-развёртывание
