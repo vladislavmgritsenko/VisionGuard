@@ -22,7 +22,7 @@ jobs:
         run: docker compose -f compose.production.yaml config --quiet
       - run: docker build --pull -t vision-guard:${{ github.sha }} .
       - name: Scan container filesystem
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: vision-guard:${{ github.sha }}
           format: table
