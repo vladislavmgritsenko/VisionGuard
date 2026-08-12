@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "vision-guard"
 version = "1.0.0"
@@ -6,6 +10,11 @@ dependencies = ["fastapi==0.116.1", "uvicorn[standard]==0.35.0", "pydantic-setti
 [project.optional-dependencies]
 dev = ["httpx==0.28.1", "pytest==8.4.1", "ruff==0.12.8"]
 ml = ["ultralytics==8.3.176"]
+
+[tool.setuptools.packages.find]
+include = ["app", "app.*"]
+exclude = ["deploy", "tests"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 [tool.ruff]
