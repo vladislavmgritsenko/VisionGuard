@@ -1,0 +1,13 @@
+.git
+.github
+.venv
+tests
+__pycache__
+*.pyc
+.env
+.env.*
+!.env.example
+!.env.production.example
+compose*.yaml
+deploy
+README.md

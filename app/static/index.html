@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vision Guard — распознавание объектов</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="shell">
+    <nav class="nav">
+      <div class="brand"><i></i>VISION / GUARD</div>
+      <div class="nav-actions"><span class="status">СИСТЕМА ГОТОВА</span><a class="button ghost" href="/docs">API</a></div>
+    </nav>
+    <main>
+      <section class="intro">
+        <div class="eyebrow">Интеллектуальный анализ изображений</div>
+        <h1>Загрузите изображение.<br><span>Увидьте каждый объект.</span></h1>
+        <p>Находите объекты, уточняйте композицию и получайте наглядный результат за несколько секунд.</p>
+      </section>
+      <section class="workspace">
+        <form id="upload-form" class="upload-panel">
+          <label class="drop-zone" id="drop-zone">
+            <input id="image-input" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+            <img id="selection-preview" class="selection-preview" alt="Предпросмотр обрезанного изображения" hidden>
+            <span class="upload-icon">＋</span>
+            <strong>Выберите или перетащите изображение</strong>
+            <small>JPG, PNG или WebP · до 8 МБ</small>
+          </label>
+          <button id="edit-crop" class="secondary" type="button" hidden>Изменить кадрирование</button>
+          <button id="analyze-button" type="submit" disabled>Распознать объекты</button>
+          <p id="message" class="message" role="status"></p>
+        </form>
+        <div class="result-panel" id="result-panel">
+          <div class="empty" id="empty-state">
+            <div class="scanner"><span></span></div>
+            <strong>Результат появится здесь</strong>
+            <span>Рамки и подписи будут нанесены поверх изображения</span>
+          </div>
+          <div class="canvas-wrap" id="canvas-wrap" hidden><canvas id="result-canvas"></canvas></div>
+          <div class="summary" id="summary" hidden></div>
+        </div>
+      </section>
+    </main>
+    <footer>Приватная локальная обработка · <a href="/health/ready">Состояние сервиса</a></footer>
+  </div>
+
+  <dialog id="crop-dialog" class="crop-dialog">
+    <div class="crop-header"><div><span>Подготовка изображения</span><h2>Настройте кадрирование</h2></div><button id="crop-close" class="icon-button" type="button" aria-label="Закрыть">×</button></div>
+    <div class="crop-stage" id="crop-stage">
+      <div class="crop-media" id="crop-media">
+        <img id="crop-image" draggable="false" alt="Изображение для кадрирования">
+        <div id="crop-box" class="crop-box">
+          <i class="grid-v one"></i><i class="grid-v two"></i><i class="grid-h one"></i><i class="grid-h two"></i>
+          <button class="crop-handle nw" data-handle="nw" type="button" aria-label="Левый верхний угол"></button>
+          <button class="crop-handle ne" data-handle="ne" type="button" aria-label="Правый верхний угол"></button>
+          <button class="crop-handle sw" data-handle="sw" type="button" aria-label="Левый нижний угол"></button>
+          <button class="crop-handle se" data-handle="se" type="button" aria-label="Правый нижний угол"></button>
+        </div>
+      </div>
+    </div>
+    <div class="crop-footer">
+      <div class="ratio-group" aria-label="Соотношение сторон">
+        <button class="ratio active" data-ratio="free" type="button">Свободно</button><button class="ratio" data-ratio="1" type="button">1:1</button><button class="ratio" data-ratio="1.333333" type="button">4:3</button><button class="ratio" data-ratio="1.777778" type="button">16:9</button>
+      </div>
+      <div class="crop-actions"><button id="crop-cancel" class="secondary" type="button">Отмена</button><button id="crop-apply" type="button">Применить</button></div>
+    </div>
+  </dialog>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

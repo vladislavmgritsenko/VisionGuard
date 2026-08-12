@@ -1,0 +1,31 @@
+name: vision-guard
+services:
+  api:
+    build: .
+    ports: ["8011:8000"]
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      MODEL_MODE: ${MODEL_MODE:-yolo}
+      MODEL_PATH: ${MODEL_PATH:-models/yolo11n.pt}
+      CONFIDENCE_THRESHOLD: ${CONFIDENCE_THRESHOLD:-0.35}
+      MAX_IMAGE_MB: ${MAX_IMAGE_MB:-8}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,testserver}
+      DOCS_ENABLED: ${DOCS_ENABLED:-true}
+      MAX_CONCURRENT_INFERENCE: ${MAX_CONCURRENT_INFERENCE:-1}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/live')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    pids_limit: 256
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

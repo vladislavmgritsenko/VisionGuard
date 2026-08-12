@@ -1,0 +1,31 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: pytest -q
+      - name: Validate production Compose
+        env:
+          DOMAIN: vision.example.com
+          METRICS_TOKEN: ci-placeholder-secret
+        run: docker compose -f compose.production.yaml config --quiet
+      - run: docker build --pull -t vision-guard:${{ github.sha }} .
+      - name: Scan container filesystem
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: vision-guard:${{ github.sha }}
+          format: table
+          exit-code: "1"
+          severity: CRITICAL
+          ignore-unfixed: true
